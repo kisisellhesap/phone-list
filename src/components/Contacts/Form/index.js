@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+const initialValue = { fullname: "", phone_number: "" };
+function Form({ addContact, contacts }) {
 
-function Form({ addContact }) {
+    const [form, setForm] = useState(initialValue);
 
-    const [form, setForm] = useState({ fullname: "", phone_number: "" });
+    useEffect(() => {
+        setForm(initialValue);
+    }, [contacts]);
+
 
     const onChangeInput = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,16 +16,17 @@ function Form({ addContact }) {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        addContact([form]);
+        addContact([...contacts, form]);
         console.log(form);
+
     }
     return (
         <form onSubmit={onSubmit}>
             <div>
-                <input name="fullname" onChange={onChangeInput} placeholder="fullname"></input>
+                <input name="fullname" value={form.fullname} onChange={onChangeInput} placeholder="fullname"></input>
             </div>
             <div>
-                <input name="phone_number" onChange={onChangeInput} placeholder="phone number"></input>
+                <input name="phone_number" value={form.phone_number} onChange={onChangeInput} placeholder="phone number"></input>
             </div>
             <div>
                 <button>
